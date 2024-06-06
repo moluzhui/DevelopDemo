@@ -2,6 +2,7 @@ package org.example.common.infrastructure.security.config;
 
 import com.google.common.base.Predicates;
 import org.example.common.infrastructure.security.filter.JWTSecurityFilter;
+import org.example.common.infrastructure.security.hander.AuthenticationEntryPointImpl;
 import org.example.common.utils.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -40,6 +43,12 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTSecurityFilter jwtSecurityFilter;
 
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandlerImpl;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPointImpl;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
@@ -49,7 +58,8 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui.html","/webjars/**","/swagger-ui.html/**",
                         "/swagger-resources/**","/v2/api-docs/**","/admin/login").anonymous()
 //                .antMatchers("/admin/**").hasRole("")
-                .anyRequest().authenticated().and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated().and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointImpl).accessDeniedHandler(accessDeniedHandlerImpl);
     }
 
     @Bean
