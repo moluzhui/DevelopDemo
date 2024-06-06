@@ -18,4 +18,9 @@ public interface ILogin {
 
     @ApiOperation("/admin/logout")
     ResultDto<String> logout();
+
+    @ApiOperation("/admin/addUser")
+    ResultDto<String> addUser(RegisterUserVo registerUserVo);
+
+
 }

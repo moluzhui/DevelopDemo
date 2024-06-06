@@ -23,22 +23,6 @@ public class UserBusServiceImpl implements UserBusService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-//    @Override
-//    public LoginResultDto login(UserVo userVo) {
-//        LoginResultDto loginResultDto = new LoginResultDto();
-//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userVo.getUsername(), userVo.getPassword());
-//        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//        if(null == authenticate){
-//            throw new RuntimeException("认证失败");
-//        }
-//        LoginUserVo loginUserVo = (LoginUserVo)authenticate.getPrincipal();
-//        String username = loginUserVo.getUsername();
-//        // 用登录账号生成token, 把token传到请求方，作为下次访问的凭证
-//        String token = JWTUtil.createJWT(username);
-//        loginResultDto.setToken(token);
-//        // loginUserVo 存在分布式缓存里，后续请求放到上下文中
-//        return loginResultDto;
-//    }
     @Override
     public LoginResultDto login(UserVo userVO) {
         LoginResultDto loginResultDo = new LoginResultDto();

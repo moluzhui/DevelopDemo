@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,6 +34,7 @@ import java.util.List;
  */
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -41,11 +43,13 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        super.configure(http);
+        // 大面积权限点配置
         http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/swagger-ui.html","/webjars/**","/swagger-ui.html/**",
-                        "/swagger-resources/**","/v2/api-docs/**","/admin/login")
-                .anonymous().anyRequest().authenticated().and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
+                        "/swagger-resources/**","/v2/api-docs/**","/admin/login").anonymous()
+//                .antMatchers("/admin/**").hasRole("")
+                .anyRequest().authenticated().and().addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

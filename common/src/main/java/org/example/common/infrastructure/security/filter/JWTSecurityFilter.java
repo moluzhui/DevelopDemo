@@ -46,6 +46,7 @@ public class JWTSecurityFilter extends OncePerRequestFilter {
             userVo.setPassword(username);
             ArrayList<String> ls = new ArrayList<>();
             ls.add("/admin/logout");
+            ls.add("ROLE_admin");
             loginUserVo.setUserVo(userVo);
             loginUserVo.setPermissions(ls);
 
