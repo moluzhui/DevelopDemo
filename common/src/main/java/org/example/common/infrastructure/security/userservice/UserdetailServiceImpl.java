@@ -1,8 +1,10 @@
 package org.example.common.infrastructure.security.userservice;
 
+import org.example.common.domain.service.user.UserService;
 import org.example.common.interfaces.outbond.login.LoginUserVo;
 import org.example.common.interfaces.outbond.login.UserVo;
 import org.example.common.utils.CommonConstant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,16 +19,22 @@ import java.util.ArrayList;
  */
 @Service
 public class UserdetailServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private UserService userServiceImpl;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LoginUserVo loginUserVo = new LoginUserVo();
-        UserVo userVo = new UserVo();
-        userVo.setUsername(username);
-        userVo.setPassword(CommonConstant.PASS_WORD);
-        ArrayList<String> ls = new ArrayList<>();
-        ls.add("/admin/logout");
-        loginUserVo.setUserVo(userVo);
-        loginUserVo.setPermissions(ls);
-        return loginUserVo;
+//        LoginUserVo loginUserVo = new LoginUserVo();
+//        UserVo userVo = new UserVo();
+//        userVo.setUsername(username);
+//        userVo.setPassword(CommonConstant.PASS_WORD);
+//        ArrayList<String> ls = new ArrayList<>();
+//        ls.add("/admin/logout");
+//        loginUserVo.setUserVo(userVo);
+//        loginUserVo.setPermissions(ls);
+//        return loginUserVo;
+
+        return userServiceImpl.queryUserByName(username);
     }
 }
